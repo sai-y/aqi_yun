@@ -34,17 +34,19 @@ if __name__ == "__main__":
         if zip_code is not None:
             print(zip_code)
             value.delete("ZIP")
+
+            time.sleep(5)
+            try:
+                response = requests.get(URL.format(zip_code, date, api_key))
+            except requests.exceptions.RequestException as e:  # This is the correct syntax
+                print e
+            else:
+                body = response.json()
+
+                for item in body:
+                    print(item['Category']['Number'])
             
         value.close()
 
-        time.sleep(5)
-        try:
-            response = requests.get(URL.format(zip_code, date, api_key))
-        except requests.exceptions.RequestException as e:  # This is the correct syntax
-            print e
-        else:
-            body = response.json()
-
-            for item in body:
-                print(item['Category']['Number'])
+        
     
