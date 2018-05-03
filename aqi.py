@@ -23,13 +23,20 @@ def get_key():
 
 if __name__ == "__main__":
     api_key = get_key()
-    value = bridgeclient()
+   
 
     while True:    
         date = str(datetime.date.today())
+
+        value = bridgeclient()
         zip_code = value.get("ZIP")
-        print(zip_code)
         
+        if zip_code is not None:
+            print(zip_code)
+            value.delete("ZIP")
+            
+        value.close()
+
         time.sleep(5)
         try:
             response = requests.get(URL.format(zip_code, date, api_key))
