@@ -44,9 +44,12 @@ if __name__ == "__main__":
         else:
             body = response.json()
 
+            larger_value = 0
             for item in body:
                 level = item['Category']['Number']
-                value.put("LEVEL", str(level))
+                if level > larger_value:
+                    larger_value = level
+                value.put("LEVEL", "L" + str(larger_value))
 
             
     value.close()

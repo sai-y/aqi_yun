@@ -30,8 +30,12 @@ void loop() {
     }
     
   }
-  if(Bridge.get("LEVEL", message, 1)){
-    Serial.println(message);
+  if(Bridge.get("LEVEL", message, 2)){
+    if(message[0] == 'L'){
+      Serial.println(message);
+      memset(message, 0, sizeof(message));
+    }
+    
     proc.runShellCommand("python /root/delete_values.py");
     while (proc.running());
     
