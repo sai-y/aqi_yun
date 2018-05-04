@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import requests
 import configparser
 import os
@@ -24,29 +26,30 @@ def get_key():
 if __name__ == "__main__":
     api_key = get_key()
    
+    value = bridgeclient()
+    
+    date = str(datetime.date.today())
 
-    while True:    
-        date = str(datetime.date.today())
+    
+    zip_code = value.get("ZIP")
+    
+    if zip_code is not None:
+        print(zip_code)
+        value.delete("ZIP")
 
-        value = bridgeclient()
-        zip_code = value.get("ZIP")
-        
-        if zip_code is not None:
-            print(zip_code)
-            value.delete("ZIP")
+        try:
+            response = requests.get(URL.format(zip_code, date, api_key))
+        except requests.exceptions.RequestException as e:  # This is the correct syntax
+            print e
+        else:
+            body = response.json()
 
-            time.sleep(5)
-            try:
-                response = requests.get(URL.format(zip_code, date, api_key))
-            except requests.exceptions.RequestException as e:  # This is the correct syntax
-                print e
-            else:
-                body = response.json()
+            for item in body:
+                level = item['Category']['Number']
+                value.put("LEVEL", str(level))
 
-                for item in body:
-                    print(item['Category']['Number'])
             
-        value.close()
+    value.close()
 
         
     

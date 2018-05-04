@@ -1,5 +1,6 @@
-#include <Bridge.h>
 
+#include <Bridge.h>
+#include <Process.h>
 void setup() {
   // put your setup code here, to run once:
   Bridge.begin();
@@ -8,6 +9,8 @@ void setup() {
 
 long steps = 0;
 char c = 0;
+char message[10];
+Process proc;
 void loop() {
   // put your main code here, to run repeatedly:
   if (Serial.available()) {
@@ -15,12 +18,23 @@ void loop() {
     while(Serial.available()) {
       c = Serial.read();
       if(c == '#'){
+        Serial.println(steps);
+        Bridge.put("ZIP", String(steps));
+        
+        proc.runShellCommand("python /root/aqi.py > /root/test.log");
+        while (proc.running());
+        Serial.println("done");
         break;
       }
       steps = (steps * 10) + (c - '0');
     }
-    Serial.println(steps);
-    Bridge.put("ZIP", String(steps));
+    
+  }
+  if(Bridge.get("LEVEL", message, 1)){
+    Serial.println(message);
+    proc.runShellCommand("python /root/delete_values.py");
+    while (proc.running());
+    
   }
 
 }
