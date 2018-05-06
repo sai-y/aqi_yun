@@ -16,7 +16,7 @@ URL = ("http://www.airnowapi.org/aq/observation/zipCode/current/"
 )
 def get_key():
     config = configparser.ConfigParser()
-    if os.path.isfile("/root/key.ini"):
+    if os.path.isfile(KEY_FILE):
         config.read(KEY_FILE)
         return config.get("TOKEN", "API_KEY")
     else:
