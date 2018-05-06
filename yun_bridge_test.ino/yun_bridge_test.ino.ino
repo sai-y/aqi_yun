@@ -2,6 +2,7 @@
 #include <Bridge.h>
 #include <Process.h>
 #include <Stepper.h>
+#include <Keypad.h>
 
 #define STEPS 600
 
