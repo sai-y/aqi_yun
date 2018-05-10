@@ -6,6 +6,7 @@
 
 #define STEPS 600
 
+Stepper stepper(STEPS, 4, 5, 6, 7);
 
 long steps = 0;
 char c = 0;
@@ -20,8 +21,8 @@ char keys[ROWS][COLS] = {
   {'7', '8', '9'},
   {'*', '0', '#'}
 };
-byte rowPins[ROWS] = {5, 6, 7, 8}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {2, 3, 4}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {9, 10, 11, 12}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {2, 3, 8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
