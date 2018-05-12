@@ -8,6 +8,7 @@
 
 Stepper stepper(STEPS, 4, 5, 6, 7);
 
+
 long steps = 0;
 char c = 0;
 char message[10];
@@ -26,12 +27,15 @@ byte colPins[COLS] = {2, 3, 8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
+int step_levels[6] = {200, 275, 315, 360, 400, 450};
+
 void setup() {
   // put your setup code here, to run once:
   Bridge.begin();
   Serial.begin(9600);
 
   stepper.setSpeed(60);
+  stepper.step(-STEPS);
 }
 
 
@@ -66,7 +70,7 @@ void loop() {
     if (message[0] == 'L') {
       Serial.println(message);
       Serial.println(90 + ((message[1] - '0') * 60));
-      stepper.step(90 + ((message[1] - '0') * 60));
+      stepper.step(step_levels[(message[1] - '0') - 1]);
       memset(message, 0, sizeof(message));
     }
 
