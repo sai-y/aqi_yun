@@ -27,7 +27,7 @@ byte colPins[COLS] = {2, 3, 8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
-int step_levels[6] = {200, 275, 315, 360, 400, 450};
+int step_levels[6] = {220, 280, 320, 355, 400, 450};
 
 void setup() {
   // put your setup code here, to run once:
@@ -51,6 +51,9 @@ void loop() {
         case '5': case '6': case '7': case '8': case '9':
           steps = (steps * 10) + (key - '0');
           break;
+        case '*':
+          stepper.step(-STEPS);
+          break;
         case '#':
         default:
           break;
@@ -69,7 +72,6 @@ void loop() {
   if (Bridge.get("LEVEL", message, 2)) {
     if (message[0] == 'L') {
       Serial.println(message);
-      Serial.println(90 + ((message[1] - '0') * 60));
       stepper.step(step_levels[(message[1] - '0') - 1]);
       memset(message, 0, sizeof(message));
     }
